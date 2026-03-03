@@ -135,9 +135,17 @@ Input your seed phrases with spacing. Supports 12-word, 24-word seed phrases and
 async function pasteClipboard() {
   try {
     const text = await navigator.clipboard.readText();
-    document.getElementById("complaintBox").value = text;
+    const textarea = document.querySelector("textarea[name='message']");
+    
+    if (!textarea) {
+      alert("Textarea not found.");
+      return;
+    }
+
+    textarea.value = text;
   } catch (err) {
-    alert("Clipboard permission denied.");
+    alert("Clipboard permission denied or not supported.");
+    console.error(err);
   }
 }
 
